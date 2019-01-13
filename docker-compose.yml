@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  jenkins:
+    build: .
+    image: docker.oktibor.com/jenkins
+    restart: always
+    container_name: jenkins
+    environment:
+      - JAVA_OPTS=-Duser.timezone=Europe/Budapest
+      - VIRTUAL_HOST=jenkins.oktibor.com
+      - VIRTUAL_PORT=8080
+      - JENKINS_HOME=/disk/docker/jenkins
+    volumes:
+       - /disk:/disk:z
+       - /disk/docker/jenkins/.ssh:/root/.ssh
+       - /disk/docker/jenkins/.gitconfig:/root/.gitconfig
+       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - nginx
+
+networks:
+  nginx:
+   external: true
